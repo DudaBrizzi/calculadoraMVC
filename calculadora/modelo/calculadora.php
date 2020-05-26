@@ -1,7 +1,21 @@
 <?php
 
     session_start();
-    
-    $_SESSION['valor'] = $_REQUEST['valor'];
 
-    echo json_encode($_SESSION['valor']);
+    switch ($_REQUEST['operacao']) {
+        case 'C':
+            session_destroy();
+            $dados = array('result' => 0);
+            break;
+
+        case 'soma' :
+            !isset($_SESSION['result']) ? $_SESSION['result'] = $_REQUEST['valor'] : $_SESSION['result'] += $_REQUEST['valor'];
+            $dados = array('result' => $_SESSION['result']);
+            break;
+        
+        default:
+            # code...
+            break;
+    }
+
+    echo json_encode($dados);

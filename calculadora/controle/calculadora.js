@@ -2,28 +2,43 @@ $(document).ready(function() {
 
     var display = ''
 
+    function calcular(value) {
+        $.ajax({
+            type: 'POST',
+            dataType: 'JSON',
+            assync: true,
+            data: value,
+            url: 'calculadora/modelo/calculadora.php',
+            success: function(dados) {
+                $('#display').val(dados.result)
+            }
+        })
+    }
+
     $('.btn').click(function(e) {
 
         e.preventDefault()
 
         let number = $(this).attr('id')
 
-        display += number
+        var value
 
-        $('#display').val(display)
+        switch (number) {
+            case 'C':
+                value = `valor=0&operacao=C`
+                calcular(value)
+                display = ''
+                break
 
-        // var value = `valor=${$(this).attr('id')}`
+            case 'soma':
+                value = `valor=${display}&operacao=soma`
+                calcular(value)
+                display = ''
+                break
 
-        // $.ajax({
-        //     type: 'POST',
-        //     dataType: 'JSON',
-        //     assync: true,
-        //     data: value,
-        //     url: 'calculadora/modelo/calculadora.php',
-        //     success: function(dados) {
-
-        //     }
-        // })
+            default:
+                display += number
+                $('#display').val(display)
+        }
     })
-
 })
